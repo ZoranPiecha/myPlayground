@@ -121,7 +121,8 @@ Please type in one of the below Options:
         return menu()
 
     else:
-        return print("Incorrect command.")
+        print("Incorrect command.")
+        return menu()
 
 
 # CHANGE PASSWORD/USER MENU
@@ -129,7 +130,7 @@ def change_pass(find_u):
     print(f"""Welcome to User Menu {username}!
 
 Please type in one of the below Options:
-    P - Change Password for {find_u} User
+    P - Change Password for {find_u}
     M - Main Menu
     U - User Directory
     D - Delete {find_u} User
@@ -145,7 +146,7 @@ Please type in one of the below Options:
         passw_vtwo = input("Please re-enter your new Password: ")
         if username in open("users.csv").read() and passw in open("passwords.csv").read():
             print("Verification Complete")
-            if passw_v is passw_vtwo:
+            if passw_v.upper() == passw_vtwo.upper():
                 file_pass = open("./passwords.csv", "w")
                 file_pass.write(passw_vtwo + ",\n")
                 file_pass.close()
@@ -222,7 +223,7 @@ def login():
             pass_attempt += 1
     else:
         print("Too many failed attempts!")
-        sys.exit()
+        return sys.exit()
 
 
 # CREATE USER
@@ -230,7 +231,7 @@ def create_user():
     # users.append(username)
     passw = input("Please chose a secure Password: ")
     passw_v = input("Please re-enter your Password: ")
-    if passw is passw_v:
+    if passw.upper() == passw_v.upper():
         file_user = open("./users.csv", "a")
         file_pass = open("./passwords.csv", "a")
         file_user.write(username + ",\n")
@@ -238,16 +239,17 @@ def create_user():
         file_user.close()
         file_pass.close()
         print(f"Account {username} successfully created!\nYou can now login.")
+        return sys.exit()
     else:
         print("Passwords do not match!")
-
+        return menu()
 
 # DELETE USER
 def delete_user(find_u):
     # users.append(username)
     passw = input(f"Please enter Password to delete {find_u}: ")
     passw_v = input(f"Please re-enter Password to delete {find_u}: ")
-    if passw is passw_v:
+    if passw.upper() == passw_v.upper():
         file_user = open("./users.csv", "w")
         file_pass = open("./passwords.csv", "w")
         file_user.write("")
@@ -284,4 +286,4 @@ while first_login:
                     continue
                 else:
                     print("Invalid Option")
-                    continue
+                    menu()
